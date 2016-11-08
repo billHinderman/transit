@@ -1,0 +1,2 @@
+class TrainStop < ApplicationRecord
+end
