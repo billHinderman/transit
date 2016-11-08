@@ -1,5 +1,5 @@
 class TrainStopsController < ApplicationController
-  before_action :set_train_stop, only: [:show, :update, :destroy]
+  before_action :set_train_stop, only: [:show, :update, :get_eta, :destroy]
 
   # GET /train_stops
   def index
@@ -10,11 +10,11 @@ class TrainStopsController < ApplicationController
 
   # GET /train_stops/1
   def show
-    @etas = get_etas
-    render json: @etas
+    render json: @train_stop
   end
 
-  def show_etas
+  # GET /train_stops/1/etas
+  def get_eta
     @etas = get_etas
     render json: @etas
   end
