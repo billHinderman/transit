@@ -12,13 +12,16 @@
 
 ActiveRecord::Schema.define(version: 20161107194300) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "train_routes", force: :cascade do |t|
     t.integer  "route_id"
     t.string   "route_name"
     t.integer  "train_stop_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.index ["train_stop_id"], name: "index_train_routes_on_train_stop_id"
+    t.index ["train_stop_id"], name: "index_train_routes_on_train_stop_id", using: :btree
   end
 
   create_table "train_stations", force: :cascade do |t|
@@ -29,7 +32,7 @@ ActiveRecord::Schema.define(version: 20161107194300) do
     t.integer  "train_stop_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.index ["train_stop_id"], name: "index_train_stations_on_train_stop_id"
+    t.index ["train_stop_id"], name: "index_train_stations_on_train_stop_id", using: :btree
   end
 
   create_table "train_stops", force: :cascade do |t|
@@ -39,11 +42,15 @@ ActiveRecord::Schema.define(version: 20161107194300) do
     t.float    "longitude"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.integer  "train_route"
     t.integer  "train_route_id"
     t.integer  "train_station_id"
-    t.integer  "train_route"
-    t.index ["train_route_id"], name: "index_train_stops_on_train_route_id"
-    t.index ["train_station_id"], name: "index_train_stops_on_train_station_id"
+    t.index ["train_route_id"], name: "index_train_stops_on_train_route_id", using: :btree
+    t.index ["train_station_id"], name: "index_train_stops_on_train_station_id", using: :btree
   end
 
+  add_foreign_key "train_routes", "train_stops"
+  add_foreign_key "train_stations", "train_stops"
+  add_foreign_key "train_stops", "train_routes"
+  add_foreign_key "train_stops", "train_stations"
 end
